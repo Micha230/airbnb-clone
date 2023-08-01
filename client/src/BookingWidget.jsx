@@ -98,7 +98,7 @@ export default function BookingWidget({ place }) {
       </div>
       <button
         onClick={bookThisPlace}
-        className="primary mt-4 transform transition-transform duration-300 hover:scale-105  hover:text-white z-10"
+        className="primary mt-4  transition-transform duration-300 hover:scale-105  hover:text-white "
       >
         Book this place{" "}
         {numberOfNights > 0 && <span>${numberOfNights * place.price}</span>}
