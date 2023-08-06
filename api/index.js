@@ -280,5 +280,34 @@ app.get("/api/bookings", async (req, res) => {
   const userData = await getUserDataFromReq(req);
   res.json(await Booking.find({ user: userData.id }).populate("place"));
 });
+app.delete("/api/places/:id", async (req, res) => {
+  mongoose.connect(process.env.MONGO_URL);
+  const { id } = req.params;
+  const { token } = req.cookies;
+  console.log("Place ID to delete:", id);
+
+  try {
+    console.log("DELETE request received");
+    const userData = await getUserDataFromReq(req);
+    console.log("User data:", userData);
+
+    const place = await Place.findById(id);
+    console.log("Place found:", place);
+
+    if (place.owner.toString() !== userData.id) {
+      return res
+        .status(403)
+        .json({ error: "You are not authorized to delete this place." });
+    }
+    await Place.findByIdAndRemove(id);
+    res.json({ message: "Place deleted successfully." });
+  } catch (err) {
+    console.error("Error while deleting the place:", err);
+
+    res
+      .status(500)
+      .json({ error: "An error occurred while deleting the place." });
+  }
+});
 
 app.listen(4000);
