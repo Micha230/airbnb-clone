@@ -169,27 +169,14 @@ app.post(
   })
 );
 
-app.post("/api/places", (req, res) => {
-  const { token } = req.cookies;
-  const {
-    title,
-    address,
-    addedPhotos,
-    description,
-    perks,
-    extraInfo,
-    checkIn,
-    checkOut,
-    maxGuests,
-    price,
-  } = req.body;
-  jwt.verify(token, jwtSecret, {}, async (err, userData) => {
-    if (err) throw err;
-    const placeDoc = await Place.create({
-      owner: userData.id,
+app.post(
+  "/api/places",
+  asyncHandler(async (req, res) => {
+    const { token } = req.cookies;
+    const {
       title,
       address,
-      photos: addedPhotos,
+      addedPhotos,
       description,
       perks,
       extraInfo,
@@ -197,10 +184,26 @@ app.post("/api/places", (req, res) => {
       checkOut,
       maxGuests,
       price,
+    } = req.body;
+    jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+      if (err) throw err;
+      const placeDoc = await Place.create({
+        owner: userData.id,
+        title,
+        address,
+        photos: addedPhotos,
+        description,
+        perks,
+        extraInfo,
+        checkIn,
+        checkOut,
+        maxGuests,
+        price,
+      });
+      res.json(placeDoc);
     });
-    res.json(placeDoc);
-  });
-});
+  })
+);
 
 app.get("/api/user-places", (req, res) => {
   const { token } = req.cookies;
@@ -317,7 +320,7 @@ app.delete(
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({ error: "Something broke!" });
+  res.status(500).json({ error: `Something broke! ${err.message}` });
 });
 
 app.listen(4000);
