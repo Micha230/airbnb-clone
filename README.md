@@ -1,6 +1,11 @@
 # airbnb-clone
+
 This is a **full-stack** web application that mimics the key functionalities of the popular Airbnb platform.
 The application allows users to list their properties (places), view listed properties, and make bookings.
+
+
+<img src="https://github.com/Micha230/airbnb-clone/assets/96614751/015e356c-9ca3-4cfe-8ee5-c61c1ecf3bbf" width="850"/>
+
 ## The backend
 Using **Node.js** and **Express.js**, serves a **RESTful API** for the front-end, leveraging libraries such as :
 * **Mongoose** for **MongoDB** data management.
