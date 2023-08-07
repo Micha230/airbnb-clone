@@ -22,7 +22,7 @@ const bucket = "michelle-booking-app";
 
 const allowedOrigins = [
   "http://127.0.0.1:5173",
-  "https://michelle-booking-app.vercel.app/",
+  "https://michelle-booking-app.vercel.app",
 ];
 
 mongoose.connect(process.env.MONGO_URL);
