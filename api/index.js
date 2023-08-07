@@ -20,6 +20,11 @@ const bcryptSalt = bcrypt.genSaltSync(10);
 const jwtSecret = process.env.JWT_SECRET;
 const bucket = "michelle-booking-app";
 
+const allowedOrigins = [
+  "http://127.0.0.1:5173",
+  "https://michelle-booking-app.vercel.app/",
+];
+
 mongoose.connect(process.env.MONGO_URL);
 
 const asyncHandler = (fn) => (req, res, next) => {
@@ -32,7 +37,13 @@ app.use("/uploads", express.static(__dirname + "/uploads"));
 app.use(
   cors({
     credentials: true,
-    origin: "http://127.0.0.1:5173",
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
   })
 );
 
