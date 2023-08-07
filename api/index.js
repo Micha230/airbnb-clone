@@ -17,7 +17,7 @@ require("dotenv").config();
 const app = express();
 
 const bcryptSalt = bcrypt.genSaltSync(10);
-const jwtSecret = "kjh35huh6u7up3";
+const jwtSecret = process.env.JWT_SECRET;
 const bucket = "michelle-booking-app";
 
 mongoose.connect(process.env.MONGO_URL);
