@@ -112,18 +112,21 @@ app.post(
   })
 );
 
-app.get("/api/profile", (req, res) => {
-  const { token } = req.cookies;
-  if (token) {
-    jwt.verify(token, jwtSecret, {}, async (err, userData) => {
-      if (err) throw err;
-      const { name, email, _id } = await User.findById(userData.id);
-      res.json({ name, email, _id });
-    });
-  } else {
-    res.json(null);
-  }
-});
+app.get(
+  "/api/profile",
+  asyncHandler(async (req, res) => {
+    const { token } = req.cookies;
+    if (token) {
+      jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+        if (err) throw err;
+        const { name, email, _id } = await User.findById(userData.id);
+        res.json({ name, email, _id });
+      });
+    } else {
+      res.json(null);
+    }
+  })
+);
 
 app.post("/api/logout", (req, res) => {
   res.cookie("token", "").json(true);
@@ -205,13 +208,16 @@ app.post(
   })
 );
 
-app.get("/api/user-places", (req, res) => {
-  const { token } = req.cookies;
-  jwt.verify(token, jwtSecret, {}, async (err, userData) => {
-    const { id } = userData;
-    res.json(await Place.find({ owner: id }));
-  });
-});
+app.get(
+  "/api/user-places",
+  asyncHandler(async (req, res) => {
+    const { token } = req.cookies;
+    jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+      const { id } = userData;
+      res.json(await Place.find({ owner: id }));
+    });
+  })
+);
 
 app.get(
   "/api/places/:id",
