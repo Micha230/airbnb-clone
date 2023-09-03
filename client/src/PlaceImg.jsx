@@ -2,8 +2,8 @@ import React from "react";
 import Image from "./Image";
 
 export default function PlaceImg({ place, index = 0, className = null }) {
-  if (!place.photos?.length) {
-    return "";
+  if (!place || !place.photos || !place.photos?.length) {
+    return null;
   }
   if (!className) {
     className = "h-full object-cover";

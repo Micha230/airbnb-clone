@@ -27,7 +27,11 @@ export default function BookingsPage() {
                 <PlaceImg place={booking.place} />
               </div>
               <div className="py-3 grow pr-3">
-                <h2 className="text-xl">{booking.place.title}</h2>
+                {booking.place ? ( // Check if booking.place exists
+                  <h2 className="text-xl">{booking.place.title}</h2>
+                ) : (
+                  <h2 className="text-xl">No place information available</h2>
+                )}
 
                 <div className="text-xl">
                   <BookingDates
